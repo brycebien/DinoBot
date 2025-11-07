@@ -1,11 +1,11 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import logging
 from dotenv import load_dotenv
-import dotenv
 import os
 import csv
 import random
+import requests
 import webserver
 
 load_dotenv()
@@ -31,12 +31,31 @@ intents.members = True
 # init bot
 bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
+
+# HEARTBEAT
+key = os.getenv('CRON_API_KEY')
+heartbeat_id = os.getenv('HEARTBEAT_KEY')
+
+CRON_HEARTBEAT_URL = f"https://cronitor.link/p/{key}/{heartbeat_id}"
+
+@tasks.loop(minutes=5)
+async def send_heartbeat():
+	try:
+		requests.get(CRON_HEARTBEAT_URL)
+	except Exception as e:
+		print(f"Failed to send heartbeat: {e}")
 # HANDLING EVENTS
 
 # on ready
 @bot.event
 async def on_ready():
-	print(f'Hello! {bot.user.name}')
+	webserver.keep_alive()
+
+	if not send_heartbeat.is_running():
+		send_heartbeat.start()
+	
+	print(f'Bot is running {bot.user}')
+
 
 # member join
 @bot.event
@@ -108,8 +127,5 @@ For more information about {dino_common_name}, check out its wikipedia here: {di
 
 	await ctx.send(f"{message}")
 
-
-# await message.channel.send("f{message.author.mention}")
-webserver.keep_alive()
 # run bot
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
