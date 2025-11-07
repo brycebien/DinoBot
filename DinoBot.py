@@ -127,5 +127,34 @@ For more information about {dino_common_name}, check out its wikipedia here: {di
 
 	await ctx.send(f"{message}")
 
+
+
+@bot.command()
+async def draven(ctx):
+	message = '''
+RANDOM DRAVEN FACT!!!
+
+I am always nearby
+
+I hunt when you aren't looking
+
+I'm behind you
+
+I'm behind you
+
+I'm behind you
+
+I'm behind you
+
+I'm behind you
+
+I'm behind you
+
+I'm behind you
+
+For more information turn around!!! 😈
+'''
+	await ctx.send(f"{message}")
+
 # run bot
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
