@@ -37,6 +37,7 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 key = os.getenv('CRON_API_KEY')
 heartbeat_id = os.getenv('HEARTBEAT_KEY')
 
+cronitor.api_key = key
 monitor = cronitor.Monitor(heartbeat_id)
 
 CRON_HEARTBEAT_URL = f"https://cronitor.link/p/{key}/{heartbeat_id}"
