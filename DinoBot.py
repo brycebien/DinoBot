@@ -6,6 +6,7 @@ import dotenv
 import os
 import csv
 import random
+import webserver
 
 load_dotenv()
 
@@ -109,6 +110,6 @@ For more information about {dino_common_name}, check out its wikipedia here: {di
 
 
 # await message.channel.send("f{message.author.mention}")
-
+webserver.keep_alive()
 # run bot
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
