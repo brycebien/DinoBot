@@ -7,6 +7,7 @@ import csv
 import random
 import requests
 import webserver
+import cronitor
 
 load_dotenv()
 
@@ -36,11 +37,14 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 key = os.getenv('CRON_API_KEY')
 heartbeat_id = os.getenv('HEARTBEAT_KEY')
 
+monitor = cronitor.Monitor(heartbeat_id)
+
 CRON_HEARTBEAT_URL = f"https://cronitor.link/p/{key}/{heartbeat_id}"
 
 @tasks.loop(minutes=5)
 async def send_heartbeat():
 	try:
+		monitor.ping(message="Bot refreshed for updates or restarted.")
 		requests.get(CRON_HEARTBEAT_URL)
 	except Exception as e:
 		print(f"Failed to send heartbeat: {e}")
