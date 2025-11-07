@@ -47,6 +47,7 @@ async def send_heartbeat():
 	try:
 		monitor.ping(message="Bot refreshed for updates or restarted.")
 		requests.get(CRON_HEARTBEAT_URL)
+		print(f"Bot health check background job sent successfully.")
 	except Exception as e:
 		print(f"Failed to send heartbeat: {e}")
 # HANDLING EVENTS
